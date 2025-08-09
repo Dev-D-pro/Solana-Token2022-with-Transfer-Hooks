@@ -249,7 +249,6 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
 ---
 
 ## Known Limitations
-- Example hook programs (KYC, limits) not included.
 - Hook approval is admin-only (not permissionless).
 
 ---
@@ -260,6 +259,31 @@ Connect wallet with `@solana/wallet-adapter.`
 Connection with `@solana/web3.js`
 Anchor client with `@coral-xyz/anchor`
 Import generated IDL.
+
+## anchorClient.ts
+this file connect with smart contract from client.
+```typescript
+
+import { AnchorProvider, Program, web3, BN } from "@coral-xyz/anchor";
+import { Connection } from "@solana/web3.js";
+import idl from "./idl.json"; 
+import { useWallet } from "@solana/wallet-adapter-react";
+
+const programID = new web3.PublicKey("je033sd668278adfadfaitujsd"); 
+const network = web3.clusterApiUrl("devnet"); 
+const opts = { preflightCommitment: "processed" as web3.Commitment };
+
+export const useAnchorProgram = () => {
+  const wallet = useWallet();
+  const connection = new Connection(network, opts.preflightCommitment);
+  const provider = new AnchorProvider(connection, wallet, opts);
+  const program = new Program(idl as any, programID, provider);
+
+  return { program, wallet, connection };
+};
+```
+
+---
 
 Create Anchor Program instance.
 
@@ -355,14 +379,13 @@ Middleware handles proxy PDA logic.
     "address": "je033sd668278adfadfaitujsd"
   }
 }
-``
+```
 
 ---
 ## Contributors
 `Twitter`
-@
+@DevDpro
 @elmajeedabbas
-@dauda.saeed
 
 ## Our Short Demo Video
 [https://youtu.be/Vtu9joso_Sc]

@@ -4,7 +4,7 @@ import { Connection } from "@solana/web3.js";
 import idl from "./idl.json"; 
 import { useWallet } from "@solana/wallet-adapter-react";
 
-const programID = new web3.PublicKey("sftswap7031668278"); 
+const programID = new web3.PublicKey("je033sd668278adfadfaitujsd"); 
 const network = web3.clusterApiUrl("devnet"); 
 const opts = { preflightCommitment: "processed" as web3.Commitment };
 
