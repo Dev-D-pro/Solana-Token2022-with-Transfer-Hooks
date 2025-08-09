@@ -192,7 +192,7 @@ fn invoke_amm_swap(ctx:&Context<ValidateAndSwap>,amount_in:u64,min_amount_out:u6
    };
    let accout_infos  = vec![ctx.accounts.user_source.to_account_info(),ctx.accounts.user_destination.to_account_info(),ctx.accounts.pool_source.to_account_info(),ctx.accounts.pool_destination.to_account_info(),];
       invoke(&ix, &account_infos)?;
-         // step 3: re wrap into proxy if necessary
+    
       proxy_wrap(&ctx,min_amount_out)?;
       
       Ok(());

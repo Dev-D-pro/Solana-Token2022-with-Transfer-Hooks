@@ -4,7 +4,7 @@
 
 | Environment | Program ID |
 |-------------|------------|
-| Devnet      | `je033sd668278adfadfaitujsd` (placeholder) |
+| Devnet      | `je033sd668278adfadfaitujsd` | 
 
 ---
 
@@ -278,7 +278,6 @@ Middleware handles proxy PDA logic.
 
 
 
-anchor deploy --provider.cluster devnet
 ---
 ## Contributors
 @Dev-D-pro

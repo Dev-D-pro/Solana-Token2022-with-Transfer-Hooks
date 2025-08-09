@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Select from "../modal/select";
+
 type properties ={
     onDestroy:(destroy:string|null) => void
 }
