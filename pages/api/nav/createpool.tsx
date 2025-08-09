@@ -4,11 +4,12 @@ import Select from "../modal/select";
 type properties ={
     onDestroy:(destroy:string|null) => void
 }
+  let initialValue = ["solana","usdc"];
 export default function Pool({onDestroy}:properties){
     const [curpage,changePage] = useState<string | null>(null);
       let [storedtoken,storedchange] = useState<any>([]);
       let [originValue,changeOriginal] = useState<any>({});
-      let initialValue = ["solana","usdc"];
+    
    
        
       useEffect(()=>{
@@ -55,9 +56,10 @@ export default function Pool({onDestroy}:properties){
     const token2 = (index:number)=>{
        initialValue[1] = storedtoken[index][0];
        var span = document.querySelector(".value-for-tokenB > .wallet-balance > span");
-             span.textContent =  originValue[initialValue[1]]?.balance;
+             span.textContent =  originValue[initialValue[1]].balance;
             var token2value = document.querySelector(".tokenB-logo-symbol > span");
-               token2value.textContent =  originValue[initialValue[1]]?.symbol;
+               token2value.textContent =  originValue[initialValue[1]].symbol;
+               console.log(originValue[initialValue[1]].symbol)
             
 querySelect("pool-token-b",storedtoken,index)
     }
@@ -165,7 +167,7 @@ function querySelect(query:string,data:any,index:number){
                 break;
                case "usdc":
                   image.src = "/icon/usdc.png";
-                image.textContent = data[index][1];
+                span.textContent = data[index][1];
                 break;
                default:
                     image.src = '';

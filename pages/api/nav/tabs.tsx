@@ -17,7 +17,7 @@ return(
     <div className="tab-container">
               <div className="tab-container-box">
                    <div className="tab1" onClick={(event)=>{listener(event,1)}} ><span>Tokens</span></div>
-                    <div className="tab2" onClick={(event)=>{listener(event,2)}} ><span>LP Loop</span></div>
+                    <div className="tab2" onClick={(event)=>{listener(event,2)}} ><span>LP Pool</span></div>
                      <div className="tab3" onClick={(event)=>{listener(event,3)}} ><span>Transactions</span></div>
               </div>
               <div className="tab-indicator-container" >

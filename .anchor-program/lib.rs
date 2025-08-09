@@ -7,7 +7,7 @@ use anchor_lang::solana_program::{
 use anchor_lang::solana_program::system_program;
 use anchor_spl::token_2022::{self,Token, TokenAccount, Transfer, Mint,Burn,InitializeMint2, MintTo};
 
-declare_id!("sftswap7031668278");
+declare_id!("je033sd668278adfadfaitujsd");
 
 #[program]
 pub mod token2022_middleware_wraper {

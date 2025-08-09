@@ -254,16 +254,11 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
 
 ---
 
-## Build & IDL (Anchor 0.29.x)
 
-```bash
-anchor build
-# IDL: target/idl/<program_name>.json
-# Binary: target/deploy/<program_name>.so
-```
 Frontend Integration
-Connect wallet with @solana/wallet-adapter.
-
+Connect wallet with `@solana/wallet-adapter.`
+Connection with `@solana/web3.js`
+Anchor client with `@coral-xyz/anchor`
 Import generated IDL.
 
 Create Anchor Program instance.
@@ -276,13 +271,98 @@ validate_and_swap for swaps.
 
 Middleware handles proxy PDA logic.
 
-
+## Our idl.json
+ ```json
+  {
+  "version": "0.1.0",
+  "name": "token2022_middleware_wraper",
+  "instructions": [
+    {
+      "name": "validateAndSwap",
+      "accounts": [
+        { "name": "user", "isMut": true, "isSigner": true },
+        { "name": "userSource", "isMut": true, "isSigner": false },
+        { "name": "userDestination", "isMut": true, "isSigner": false },
+        { "name": "tokenMint", "isMut": true, "isSigner": false },
+        { "name": "proxyTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "proxyMint", "isMut": true, "isSigner": false },
+        { "name": "poolSource", "isMut": true, "isSigner": false },
+        { "name": "poolDestination", "isMut": true, "isSigner": false },
+        { "name": "raydiumProgram", "isMut": false, "isSigner": false },
+        { "name": "hookProgram", "isMut": false, "isSigner": false },
+        { "name": "whitelist", "isMut": true, "isSigner": false },
+        { "name": "ammProgram", "isMut": false, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "amountIn", "type": "u64" },
+        { "name": "minAmountOut", "type": "u64" }
+      ]
+    },
+    {
+      "name": "createTokenWithHook",
+      "accounts": [
+        { "name": "user", "isMut": true, "isSigner": true },
+        { "name": "mint", "isMut": true, "isSigner": false },
+        { "name": "userTokenAccount", "isMut": true, "isSigner": false },
+        { "name": "whitelist", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "decimals", "type": "u8" },
+        { "name": "initialSupply", "type": "u64" },
+        { "name": "hookProgram", "type": "publicKey" }
+      ]
+    },
+    {
+      "name": "addHook",
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        { "name": "whitelist", "isMut": true, "isSigner": false }
+      ],
+      "args": [
+        { "name": "hook", "type": "publicKey" }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Whitelist",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "admin", "type": "publicKey" },
+          { "name": "allowedHooks", "type": { "vec": "publicKey" } }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "HookValidationFailed",
+      "msg": "Transfer Hook validation failed"
+    },
+    {
+      "code": 6001,
+      "name": "HookNotWhitelisted",
+      "msg": "Hook program not whitelisted"
+    }
+  ],
+  "metadata": {
+    "address": "je033sd668278adfadfaitujsd"
+  }
+}
+``
 
 ---
 ## Contributors
-@Dev-D-pro
-@epitome
-
+`Twitter`
+@
+@elmajeedabbas
+@dauda.saeed
 
 ## Our Short Demo Video
-[![Our Video Demo] (https://img.youtube.com/vi/Vtu9joso_Sc/0.jpg)](https://youtu.be/Vtu9joso_Sc)
+[https://youtu.be/Vtu9joso_Sc]
