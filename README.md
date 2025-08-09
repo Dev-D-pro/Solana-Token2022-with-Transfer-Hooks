@@ -117,6 +117,9 @@ pub fn create_token_with_hook(
                       proxy_unwrap(&ctx)?;
         }
 
+---
+
+
 ### `simulate_hook`
 Read-only CPI to hook program to test if transfer will pass.
 ```rust
@@ -136,7 +139,10 @@ fn simulate_hook(hook: &Pubkey, user:&Pubkey, amount:u64) -> Result<bool>{
           Err(_) => Ok(false),
       }
 }
+---
+
 ### `invoke_amm_swap`
+
 Calls AMM swap instruction; includes proxy unwrap/wrap around call.
  ```rust
 fn invoke_amm_swap(ctx:&Context<ValidateAndSwap>,amount_in:u64,min_amount_out:u64) -> Result<()>{
@@ -164,6 +170,8 @@ fn invoke_amm_swap(ctx:&Context<ValidateAndSwap>,amount_in:u64,min_amount_out:u6
       
       Ok(());
 }
+
+---
 ### `proxy_wrap` / `proxy_unwrap`
 - **Wrap**: Transfers Token-2022 into proxy token account.
 - **Unwrap**: Burns proxy tokens, returns Token-2022.
@@ -222,6 +230,7 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
          Ok(())
 
 }
+
 ---
 
 ## What’s Implemented
