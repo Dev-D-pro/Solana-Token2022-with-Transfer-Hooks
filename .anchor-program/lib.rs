@@ -4,7 +4,8 @@ use anchor_lang::solana_program::{
      instruction::{AccountMeta,Instruction},
      program::invoke,
 }
-use anchor_spl::token_2022::{self,Token, TokenAccount, Transfer, Mint,Burn};
+use anchor_lang::solana_program::system_program;
+use anchor_spl::token_2022::{self,Token, TokenAccount, Transfer, Mint,Burn,InitializeMint2, MintTo};
 
 declare_id!("sftswap7031668278");
 
@@ -13,24 +14,87 @@ pub mod token2022_middleware_wraper {
     use super::*;
         pub fn validate_and_swap(ctx:Context<ValidateAndSwap>,amount_in:u64,min_amount_out:u64,) -> Result<()>{
              let hook_program = &ctx.accounts.hook_program;
-            //pre transfer simulation: call hook program read-only
+            
              let hook_passed = simulate_hook(&hook_program.key(),&ctx.accounts.user.key(),amount_in)?;
              require!(hook_passed,CustomError:HookValidationFailed);
 
-               // let check hook whitelist
+               
                let whitelist = &ctx.accounts.whitelist.load()?;
                 require!(whitelist.hooks.contains(&hook_program.key()),CustomError:HookNotWhitelisted);
 
                 //wrap token if AMM doesn't support hook
-                if ctx.accounts.amm_supports_hooks{
-                      invoke_amm_swap(&ctx,amount_in,min_amount_out)?;
-                }
-                    else {
+               
                     proxy_wrap(&ctx,amount_in)?;
                         invoke_amm_swap(&ctx,amount_in,min_amount_out)?;
                       proxy_unwrap(&ctx)?;
-                   }
         }
+          pub fn create_token_with_hook(
+        ctx: Context<CreateTokenWithHook>, 
+        decimals: u8,
+        initial_supply: u64,
+        hook_program: Pubkey,
+    ) -> Result<()> {
+        
+        token_2022::initialize_mint2(
+            CpiContext::new(
+                ctx.accounts.token_program.to_account_info(),
+                InitializeMint2 {
+                    mint: ctx.accounts.mint.to_account_info(),
+                    rent: ctx.accounts.rent.to_account_info(),
+                },
+            ),
+            decimals,
+            &ctx.accounts.user.key(),
+            Some(&hook_program),
+        )?;
+
+        
+        token_2022::mint_to(
+            CpiContext::new(
+                ctx.accounts.token_program.to_account_info(),
+                MintTo {
+                    mint: ctx.accounts.mint.to_account_info(),
+                    to: ctx.accounts.user_token_account.to_account_info(),
+                    authority: ctx.accounts.user.to_account_info(),
+                },
+            ),
+            initial_supply,
+        )?;
+
+        
+        let whitelist = &mut ctx.accounts.whitelist;
+        if !whitelist.allowed_hooks.contains(&hook_program) {
+            whitelist.allowed_hooks.push(hook_program);
+        }
+
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct CreateTokenWithHook<'info> {
+    #[account(mut)]
+    pub user: Signer<'info>,
+
+    #[account(
+        init,
+        payer = user,
+        space = 82, // space for Mint
+        seeds = [b"mint", user.key().as_ref()],
+        bump,
+    )]
+    pub mint: Account<'info, Mint>,
+
+    #[account(mut)]
+    pub user_token_account: Account<'info, token_2022::TokenAccount>,
+
+    #[account(mut)]
+    pub whitelist: Account<'info, Whitelist>,
+
+    pub token_program: Program<'info, Token>,
+    pub system_program: Program<'info, System>,
+    pub rent: Sysvar<'info, Rent>,
+}
    
 
      
@@ -39,7 +103,7 @@ pub mod token2022_middleware_wraper {
 pub struct ValidateAndSwap<'info> {
  #[account(mut)]
  pub user: Signer<'info>,
-  //token being swapped #[account(mut)]
+  
   #[account(mut)]
     pub user_source: Account<'info,TokenAccount>,
 
@@ -48,7 +112,7 @@ pub struct ValidateAndSwap<'info> {
 
     #[account(mut)]
     pub token_mint: Account<'info,Mint>,
-    //proxy token accounts for wrap. unwrap
+  
     #[account(mut)]
     pub proxy_token_account:
     Account<'info,TokenAccount>,
@@ -59,11 +123,11 @@ pub struct ValidateAndSwap<'info> {
         #[account(mut)]
       pub pool_destination:AccountInfo<'info>,
      pub raydium_program:Account<'info>,
-    //check: external hook program
+    
     pub hook_program: UncheckedAccount<'info>,
     #[account(mut)]
        pub whitelist: AccountInfo<'info>,
-    /// checked: target AMM program
+  
     pub amm_program: UncheckedAccount<'info>,
     pub token_program: Program<'info,Token>,
 
@@ -92,7 +156,7 @@ pub enum CustomError {
 ///simulate hook program logic (read-only)
 
 fn simulate_hook(hook: &Pubkey, user:&Pubkey, amount:u64) -> Result<bool>{
-    //build a CPI call to the hook program
+  
     let ix = Instruction{
           program_id, *hook,accounts:vec![
               AccountMeta::new_readonly(*user,true),
@@ -163,7 +227,7 @@ fn proxy_unwrap(ctx:&Context<ValidateAndSwap>,amount:u64) -> Result<()> {
     let proxy_mint = &ctx.accounts.proxy_mint;
     let token_program = &ctx.accounts.token_program;
 
-    //step 1: burn the users token-2022 amount ( qith hook logic already simulated);
+
     let burns_accounts = Burn{
          mint: proxy_mint.to_account_info(),
          from: user_source.to_account_info(),
@@ -172,7 +236,7 @@ fn proxy_unwrap(ctx:&Context<ValidateAndSwap>,amount:u64) -> Result<()> {
     let burn_ctx = CpiContext::new(token_program.to_account_info(),burns_accounts);   
         token_2022::burn(burn_ctx,amount)?;
 
-        // step 2: transfer back original tokens from proxy to user
+      
         let transfer_accounts = Transfer{
              from:user_source.to_account_info(),
              to: ctx.accounts.user_source.to_account_info(),
@@ -186,7 +250,7 @@ fn proxy_unwrap(ctx:&Context<ValidateAndSwap>,amount:u64) -> Result<()> {
 
 pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
     let whitelist = &mut ctx.accounts.whitelist;
-    //only the admin can update the whitelist
+    
         require_keys_eq!(ctx.accounts.admin.key(),whitelist.admin,CustomError::HookNotWhitelisted);
         
          if ! whitelist.allowed_hooks.contains(&hook) {

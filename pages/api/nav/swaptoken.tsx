@@ -1,9 +1,11 @@
 
-
-export default function Swap(){
+type properties ={
+    onDestroy:(destroy:string|null) => void
+}
+export default function Swap({onDestroy}:properties){
 return (
      <div className="swap-container">
-         <div className="swap-header">
+         <div className="swap-header" onClick={()=>{onDestroy(null)}}>
             <svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 -960 960 960" width="21px" fill="#fff"><path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
                 <span>Swap</span>
          </div>

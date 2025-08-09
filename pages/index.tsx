@@ -5,10 +5,10 @@ import CreateToken from "./api/nav/createtoken";
 import ConnectWallet from "./api/nav/connectWallet";
 export default function Home(){
     return(
-          /*<Dashboard></Dashboard>*/
-          /* <Swap></Swap> */
+          <Dashboard></Dashboard>
+          /*  */
             /*<Pool></Pool> */
           /*  <CreateToken></CreateToken>  */
-              <ConnectWallet></ConnectWallet>
+             /* <ConnectWallet></ConnectWallet> */
     )
 }

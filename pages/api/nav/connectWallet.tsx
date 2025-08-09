@@ -8,7 +8,7 @@ export default function ConnectWallet(){
  return (     <div className="container-main">
                   <div className="connect-wallet-header">
                     <div className="logo">
-
+           
                     </div>
                         <div className="connect-wallet-button" >
                               <span>Connect</span>

@@ -1,24 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 
-  
-export default function Tabs(){
+  type paramProps = {
+         click:(index:number) => void
+  };
+export default function Tabs({click}:paramProps){
  var [currentTab, changeTab]= useState<Array<null>>([]);
-        var listener = (event:any)=>{
+        var listener = (event:any,index:any)=>{
             let curObject = event.target;
                    var width = curObject.offsetWidth, index = curObject.offsetLeft;
-                     alert()
-                      changeTab([width,index])
+                       let indicator = document.querySelector(".tab-indicator");
+                           indicator.style.width = `${width}px`;
+                            indicator.style.left = `${index}px`;
+                               click(index);
         } 
-        useEffect(()=>{
-            let indicator = document.querySelector(".tab-indicator");
-                
-        })
 return(
     <div className="tab-container">
               <div className="tab-container-box">
-                   <div className="tab1" onClick={listener} >Tokens</div>
-                    <div className="tab2" onClick={listener} >LP Loop</div>
-                     <div className="tab3" onClick={listener} >Transactions</div>
+                   <div className="tab1" onClick={(event)=>{listener(event,1)}} ><span>Tokens</span></div>
+                    <div className="tab2" onClick={(event)=>{listener(event,2)}} ><span>LP Loop</span></div>
+                     <div className="tab3" onClick={(event)=>{listener(event,3)}} ><span>Transactions</span></div>
               </div>
               <div className="tab-indicator-container" >
                  <div className="tab-indicator" ></div>

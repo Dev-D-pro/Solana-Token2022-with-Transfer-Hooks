@@ -1,8 +1,95 @@
+import { useEffect, useState } from "react";
+import Select from "../modal/select";
+type properties ={
+    onDestroy:(destroy:string|null) => void
+}
+export default function Pool({onDestroy}:properties){
+    const [curpage,changePage] = useState<string | null>(null);
+      let [storedtoken,storedchange] = useState<any>([]);
+      let [originValue,changeOriginal] = useState<any>({});
+      let initialValue = ["solana","usdc"];
+   
+       
+      useEffect(()=>{
+      
+            if(window !== undefined){
+              let ObjectValue:any = [];
+                       ObjectValue = localStorage.getItem("ObjectValue");
+                   if(ObjectValue){
+                        changeOriginal(JSON.parse(ObjectValue));
+                       ObjectValue = Array.from(Object.entries(JSON.parse(ObjectValue)));
+                       let newValue= ObjectValue.map((e:any)=>[e[0],e[1].symbol]);
+                        storedchange(newValue);
+                   }
+               
+                     
+            }
+      
+               
+         },[]);
+ setTimeout(()=>{
+ var span = document.querySelector(".value-for-tokenA > .wallet-balance > span");
+                 span.textContent =  originValue[initialValue[0]]?.balance;
 
-export default function Pool(){
+               var token1value = document.querySelector(".tokenA-logo-symbol > span");
+               token1value.textContent =  originValue[initialValue[0]]?.symbol;
+
+               var span = document.querySelector(".value-for-tokenB > .wallet-balance > span");
+             span.textContent =  originValue[initialValue[1]]?.balance;
+            var token2value = document.querySelector(".tokenB-logo-symbol > span");
+               token2value.textContent =  originValue[initialValue[1]]?.symbol;
+                   
+ },100)
+    const token1 = (index:number)=>{
+              initialValue[0] = storedtoken[index][0];
+                var span = document.querySelector(".value-for-tokenA > .wallet-balance > span");
+             span.textContent =  originValue[initialValue[0]]?.balance;
+
+               var token1value = document.querySelector(".tokenA-logo-symbol > span");
+               token1value.textContent =  originValue[initialValue[0]]?.symbol;
+
+           
+           querySelect("pool-token-a",storedtoken,index);
+    };
+    const token2 = (index:number)=>{
+       initialValue[1] = storedtoken[index][0];
+       var span = document.querySelector(".value-for-tokenB > .wallet-balance > span");
+             span.textContent =  originValue[initialValue[1]]?.balance;
+            var token2value = document.querySelector(".tokenB-logo-symbol > span");
+               token2value.textContent =  originValue[initialValue[1]]?.symbol;
+            
+querySelect("pool-token-b",storedtoken,index)
+    }
+    const triggertoken1 = ()=>{
+        changePage("token1");
+    }
+    const triggertoken2 = ()=>{
+       changePage("token2");
+    }
+    let priceValue1 = 0;
+    let priceValue2 = 0;
+    const computePriceToken1 = (e:any)=>{
+          priceValue1=(parseInt(e)*parseInt(originValue[initialValue[0]].unitindollar));
+          document.querySelector(".total-deposit-amount").textContent = '$'+(priceValue1+priceValue2)||0;
+    }
+    const computePriceToken2 = (e:any)=>{
+     priceValue2 =(parseInt(e)*parseInt(originValue[initialValue[1]].unitindollar));
+      document.querySelector(".total-deposit-amount").textContent = '$'+(priceValue1+priceValue2)||0;
+    }
+    const createLPbutton = ()=>{
+setTimeout(()=>{
+   alert("you just added liquidity pool with address RjadfhiEDj3ksdahkdah3hfadskl");
+   onDestroy(null);
+},1500);
+    }
       return (
+         
          <div className="create-pool-container">
-                  <div className="pool-header">
+             <div style={{display:`${curpage==null?'none':'block'}`}} className="page-overlay">
+                       {curpage == 'token1'?<Select onDestroy={changePage} title="Select Base Token" data={storedtoken} selected={token1} ></Select>:''}
+                         {curpage == 'token2'?<Select onDestroy={changePage} title="Select Token 2" data={storedtoken} selected={token2} ></Select>:''}
+                      </div>
+                  <div className="pool-header" onClick={()=>onDestroy(null)}>
                      <svg xmlns="http://www.w3.org/2000/svg" height="21px" viewBox="0 -960 960 960" width="21px" fill="#fff"><path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
                        <span>Create Liquidity Pool</span>
                   </div>
@@ -10,12 +97,12 @@ export default function Pool(){
                          <div className="pool-choose-tokens">
                               Select Tokens
                          </div>
-                        <div className="pool-token-a">
+                        <div className="pool-token-a" onClick={triggertoken1}>
                                 <img src="/icon/solana.png" className="wallet-icon" width="21px" height="21px"/>
                    <span>SOL</span>
                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#b1b1b1"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
                         </div>
-                         <div className="pool-token-b">
+                         <div className="pool-token-b" onClick={triggertoken2}>
                      <img src="/icon/usdc.png" className="wallet-icon" width="21px" height="21px"/>
                    <span>USDC</span>
                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#b1b1b1"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>
@@ -32,11 +119,11 @@ export default function Pool(){
                                   </div>
                                   <div className="tokenA-input">
                                       <div className="tokenA-logo-symbol">
-                                         <img src="/icon/solana.png" className="wallet-icon" width="21px" height="21px"/>
-                                          <span>SOL</span>
+                                       
+                                          <span></span>
                                       </div>
                                        <div>
-                                      <input type="number" placeholder="0" />
+                                      <input type="number" placeholder="0" onChange={(e)=>computePriceToken1(e.target.value)}/>
                                        </div>
                                   </div>
                             </div>
@@ -48,20 +135,40 @@ export default function Pool(){
                              </div>
                              <div className="tokenB-input">
                                 <div className="tokenB-logo-symbol">
-                                    <img src="/icon/usdc.png" className="wallet-icon" width="21px" height="21px"/>
-                                    <span>USDC</span>
+                                   
+                                    <span></span>
                                 </div>
                                 <div>
-                                <input type="number"  />
+                                <input type="number"  placeholder="0" onChange={(e)=>computePriceToken2(e.target.value)}/>
                                 </div>
                              </div>
                           </div>
                            <div className="total-deposit-container">
                                  <span className="total-deposit-label">Total Deposit</span>
-                                  <span className="total-deposit-amount">$2000</span>
+                                  <span className="total-deposit-amount">$0</span>
                            </div>
-                           <div className="deposit-button">Deposit</div>
+                           <div className="deposit-button" onClick={createLPbutton}>Deposit</div>
                       </div>
          </div>
       );
+}
+function querySelect(query:string,data:any,index:number){
+   
+    let image = document.querySelector(`.${query} > img`);
+            let span =  document.querySelector(`.${query} > span`);
+         
+           switch(data[index][0]){
+            case "solana": 
+               image.src = "/icon/solana.png";
+                span.textContent = data[index][1];
+                break;
+               case "usdc":
+                  image.src = "/icon/usdc.png";
+                image.textContent = data[index][1];
+                break;
+               default:
+                    image.src = '';
+                 span.textContent = data[index][1];
+                 
+           }
 }
