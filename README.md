@@ -95,6 +95,7 @@ pub fn create_token_with_hook(
 
         Ok(())
     }
+  ```
 ### `validate_and_swap`
 - Simulates hook.
 - Verifies whitelist.
@@ -117,7 +118,7 @@ pub fn create_token_with_hook(
                       proxy_unwrap(&ctx)?;
         }
 
----
+```
 
 
 ### `simulate_hook`
@@ -139,7 +140,7 @@ fn simulate_hook(hook: &Pubkey, user:&Pubkey, amount:u64) -> Result<bool>{
           Err(_) => Ok(false),
       }
 }
----
+```
 
 ### `invoke_amm_swap`
 
@@ -171,7 +172,7 @@ fn invoke_amm_swap(ctx:&Context<ValidateAndSwap>,amount_in:u64,min_amount_out:u6
       Ok(());
 }
 
----
+```
 ### `proxy_wrap` / `proxy_unwrap`
 - **Wrap**: Transfers Token-2022 into proxy token account.
 - **Unwrap**: Burns proxy tokens, returns Token-2022.
@@ -230,8 +231,7 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
          Ok(())
 
 }
-
----
+```
 
 ## What’s Implemented
 - Middleware program:
