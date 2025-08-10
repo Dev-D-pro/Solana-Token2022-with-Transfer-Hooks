@@ -5,7 +5,10 @@
 | Environment | Program ID |
 |-------------|------------|
 | Devnet (middleware_relayer) | `je033sd668278adfadfaitujsd` | 
+|------<<<<<<< HEAD
 |-----------------------------|------------------------------|
+=======
+>>>>>>> 62671be6f60d35fd55707265e63349e611026958
 | Devnet (Kyc_hook Program)    | `ad48sdywoahblaueiwohgoahdiwy`|
 ---
 
@@ -47,7 +50,11 @@ The middleware performs:
 
 ---
 ## Project Code Structure
+<<<<<<< HEAD
  ## Our important pages structures
+=======
+ `Our important pages structure`
+>>>>>>> 62671be6f60d35fd55707265e63349e611026958
 ```plaintext
 /.anchor-program
 |    |--- kychook_program
@@ -75,6 +82,10 @@ The middleware performs:
 |   |--- _app.tsx
 |   |--- _document.tsx
 |   |--- index.tsx
+<<<<<<< HEAD
+=======
+```
+>>>>>>> 62671be6f60d35fd55707265e63349e611026958
 
 ## How the System Works (Swap Flow)
 
@@ -286,7 +297,11 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
 
 }
 
+<<<<<<< HEAD
 ## Our HYC Hook Program
+=======
+## KYC Hook Program
+>>>>>>> 62671be6f60d35fd55707265e63349e611026958
 the **KYC HOOK** is a transfer hook program that enforces know your custommer (kyc)
  rule before allowing token transfers.
  it maintains a whitelist of approved wallet address and validate each transfer by checking if the sender is on this list
@@ -412,24 +427,17 @@ pub enum CustomError {
   - Liquidity Records
 - Pre-transfer simulation + whitelist enforcement
 
+<<<<<<< HEAD
 
+=======
 ---
-
-
-Frontend Integration
-Connect wallet with `@solana/wallet-adapter.`
-Connection with `@solana/web3.js`
-Anchor client with `@coral-xyz/anchor`
-Import generated IDL.
-
-## Client Anchor file
-### this file connect with smart contract from client.
-```typescript
-
-import { AnchorProvider, Program, web3, BN } from "@coral-xyz/anchor";
-import { Connection } from "@solana/web3.js";
-import idl from "./idl.json"; 
-import { useWallet } from "@solana/wallet-adapter-react";
+- Kyc Hook Program:
+  - `add_user`
+  - `remove_user`
+  - `pre transfer hook`
+  -  `security` necessary for **KYC** verification
+>>>>>>> 62671be6f60d35fd55707265e63349e611026958
+ { useWallet } from "@solana/wallet-adapter-react";
 
 const programID = new web3.PublicKey("je033sd668278adfadfaitujsd"); 
 const network = web3.clusterApiUrl("devnet"); 
