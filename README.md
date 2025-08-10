@@ -286,7 +286,7 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
 
 }
 
-## Our HYC Hook Program
+## KYC Hook Program
 the **KYC HOOK** is a transfer hook program that enforces know your custommer (kyc)
  rule before allowing token transfers.
  it maintains a whitelist of approved wallet address and validate each transfer by checking if the sender is on this list
@@ -412,7 +412,11 @@ pub enum CustomError {
   - Liquidity Records
 - Pre-transfer simulation + whitelist enforcement
 
-
+---
+- Kyc Hook Program:
+  - add_user
+  - remove_user
+  - pre transfer hook
 ---
 
 
