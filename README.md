@@ -420,7 +420,7 @@ pub enum CustomError {
   - `remove_user`
   - `pre transfer hook`
   -  `security` necessary for **KYC** verification
-  
+
  { useWallet } from "@solana/wallet-adapter-react";
 
 const programID = new web3.PublicKey("je033sd668278adfadfaitujsd"); 
@@ -586,7 +586,7 @@ Middleware handles proxy PDA logic.
 ---
 
 ## Our Short Demo Video
-[https://youtu.be/Vtu9joso_Sc]
+[![Watch the video](https://img.youtube.com/vi/Vtu9joso_Sc/maxresdefault.jpg)](https://youtu.be/Vtu9joso_Sc)
 
 ## Contributors
 `Twitter`
