@@ -46,7 +46,7 @@ The middleware performs:
 
 ---
 ## Project Code Structure
- ## Our important pages structures
+ `Our important pages structure`
 ```plaintext
 /.anchor-program
 |    |--- kychook_program
