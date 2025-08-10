@@ -220,6 +220,7 @@ fn proxy_unwrap(ctx:&Context<ValidateAndSwap>,amount:u64) -> Result<()> {
 ```
 ### `add_hook`
 Adds a hook program to whitelist (admin only).
+```rust
 pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
     let whitelist = &mut ctx.accounts.whitelist;
     
