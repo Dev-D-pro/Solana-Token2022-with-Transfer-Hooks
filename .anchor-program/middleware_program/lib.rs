@@ -152,17 +152,24 @@ pub enum CustomError {
     #[msg("Hook program not whitelisted")]
       HookNotWhitelisted,
 }
-
+//let invoke our kyc hook PreTransferHookix at: ad48sdywoahblaueiwohgoahdiwy
+#[derive(AnchorSerialize,AnchorDeserialize)]
+pub struct PreTransferHookix{
+    pub _amount:u64,
+}
 ///simulate hook program logic (read-only)
 
 fn simulate_hook(hook: &Pubkey, user:&Pubkey, amount:u64) -> Result<bool>{
-  
+
+    // our kyc_hook function
+                let ix_data = PreTransferHookix{_amount:amount}.try_to_vec().unwrap();
     let ix = Instruction{
-          program_id, *hook,accounts:vec![
+          program_id:*hook,
+            accounts:vec![
               AccountMeta::new_readonly(*user,true),
           ],
           data:
-          HookInstruction::SimulateTransfer{amount}.try_to_vec().unwrap,
+          HookInstruction::ix,
     };
     let account_infos: Vec<AccountInfo> = vec![];
     let result = solana::program::invoke(&ix,&account_infos);
@@ -173,7 +180,7 @@ fn simulate_hook(hook: &Pubkey, user:&Pubkey, amount:u64) -> Result<bool>{
 }
 //invoke amm swap this is where the real trade happens
 fn invoke_amm_swap(ctx:&Context<ValidateAndSwap>,amount_in:u64,min_amount_out:u64) -> Result<()>{
-     //step 1 proxy unwrap before trade
+     
      proxy_unwrap(&ctx,amount_in)?;
    let ix = Instruction{
     program_id: ctx.accounts.raydium_program.key(),

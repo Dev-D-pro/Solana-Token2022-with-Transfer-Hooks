@@ -1,0 +1,46 @@
+
+{
+  "version": "0.1.0",
+  "name": "kyc_hook",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        { "name": "kycRegistry", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": []
+    },
+    {
+      "name": "addUser",
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        { "name": "kycRegistry", "isMut": true, "isSigner": false }
+      ],
+      "args": [
+        { "name": "user", "type": "publicKey" }
+      ]
+    },
+    {
+      "name": "removeUser",
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        { "name": "kycRegistry", "isMut": true, "isSigner": false }
+      ],
+      "args": [
+        { "name": "user", "type": "publicKey" }
+      ]
+    },
+    {
+      "name": "preTransferHook",
+      "accounts": [
+        { "name": "kycRegistry", "isMut": false, "isSigner": false },
+        { "name": "sourceAuthority", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "_amount", "type": "u64" }
+      ]
+    }
+  ]
+}
