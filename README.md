@@ -414,9 +414,10 @@ pub enum CustomError {
 
 ---
 - Kyc Hook Program:
-  - add_user
-  - remove_user
-  - pre transfer hook
+  - `add_user`
+  - `remove_user`
+  - `pre transfer hook`
+  -  `security` necessary for **KYC** verification
 ---
 
 
