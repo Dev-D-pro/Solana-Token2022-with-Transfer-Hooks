@@ -276,6 +276,8 @@ fn proxy_unwrap(ctx:&Context<ValidateAndSwap>,amount:u64) -> Result<()> {
 ```
 ### `add_hook`
 Adds a hook program to whitelist (permissionless).
+
+```rust
 pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
     let whitelist = &mut ctx.accounts.whitelist;
     
@@ -421,6 +423,19 @@ pub enum CustomError {
   - `pre transfer hook`
   -  `security` necessary for **KYC** verification
 
+---
+## Steps Our Front-End call Anchor Program:
+
+Create Anchor Program instance.
+
+`Call`:
+
+create_token_with_hook for token creation.
+
+validate_and_swap for swaps.
+
+Middleware handles proxy PDA logic.
+
 ## Calling our Anchor Smart Contract from typescript
 
 ```typescript
@@ -442,15 +457,6 @@ export const useAnchorProgram = () => {
 
 ---
 
-Create Anchor Program instance.
-
-Call:
-
-create_token_with_hook for token creation.
-
-validate_and_swap for swaps.
-
-Middleware handles proxy PDA logic.
 
 ## Our Middleware idl.json
  ```json
