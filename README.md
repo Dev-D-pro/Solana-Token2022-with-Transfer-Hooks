@@ -288,6 +288,7 @@ pub fn add_hook(ctx:Context<AddHook>,hook:Pubkey) -> Result<()>{
          Ok(())
 
 }
+```
 
 ## KYC Hook Program
 
