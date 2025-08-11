@@ -596,7 +596,7 @@ export const useAnchorProgram = () => {
 ---
 
 ## Our Short Demo Video
-[![Watch the video](https://img.youtube.com/vi/Vtu9joso_Sc/maxresdefault.jpg)](https://youtu.be/Vtu9joso_Sc)
+[![Watch the video Demo](https://img.youtube.com/vi/Vtu9joso_Sc/maxresdefault.jpg)](https://x.com/devDpro/status/1954844372492566796?t=55DoSOOjx8lNQTO7IFxp2Q&s=19)
 
 ## Contributors
 `Twitter`
