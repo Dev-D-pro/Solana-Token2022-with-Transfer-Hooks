@@ -421,6 +421,9 @@ pub enum CustomError {
   - `pre transfer hook`
   -  `security` necessary for **KYC** verification
 
+## Calling our Anchor Smart Contract from typescript
+
+```typescript
  { useWallet } from "@solana/wallet-adapter-react";
 
 const programID = new web3.PublicKey("je033sd668278adfadfaitujsd"); 
